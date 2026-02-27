@@ -3,59 +3,110 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evvan <evvan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/28 11:36:47 by evvan             #+#    #+#             */
-/*   Updated: 2026/01/29 12:21:43 by evvan            ###   ########.fr       */
+/*   Created: 2025/12/01 11:20:35 by maroard           #+#    #+#             */
+/*   Updated: 2026/02/19 18:24:16 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include <stdlib.h>
-# include <limits.h>
-# include <unistd.h>
-# include <stdio.h>
 # include "./libft/libft.h"
+
+typedef enum strategies
+{
+	SIMPLE,
+	MEDIUM,
+	COMPLEX,
+	ADAPTIVE
+}	t_strat;
+
+typedef enum operations
+{
+	SA,
+	SB,
+	SS,
+	PA,
+	PB,
+	RA,
+	RB,
+	RR,
+	RRA,
+	RRB,
+	RRR,
+	OP_COUNT
+}	t_op;
 
 typedef struct s_node
 {
-	int				content;
+    int				content;
 	int				index;
-	struct s_node	*next;
+    struct s_node	*next;
 	struct s_node	*prev;
 }					t_node;
 
 typedef struct s_stack
 {
-	t_node	*top;
-	int		size;
+    t_node	*top;
+    int		size;
 }			t_stack;
 
-t_node	*create_node(int new_content);
-void	node_add_back(t_node **stack, t_node *new_node);
-t_node	*last_node(t_node *a);
+typedef struct s_bench
+{
+	t_bool	is_active;
+	int		ops[OP_COUNT];
+	int		total_ops;
+	int		complexity;
+}			t_bench;
 
-int		error_duplicate(t_node *a, int n);
-int		error_syntaxe(char *str);
+typedef struct s_ctx
+{
+	t_bool	is_checker;
+	t_stack	a;
+	t_stack	b;
+	t_bench	bench;
+	t_strat	strategy;
+	int		nb_flags;
+	double	disorder;
+}			t_ctx;
 
-char	init_stack_a(t_node **a, char **str);
+t_node	*create_node(int content);
+t_node	*last_node(t_node *top);
+void	node_add_back(t_node **top, t_node *new);
+void	node_add_front(t_node **top, t_node *new);
+int		clear_stack(t_node **top);
+void	print_stack(t_node *top, char A_or_B);
+t_bool	is_number(char *arg);
+t_bool	is_extremum(t_node *to_check, t_stack A_or_B, t_bool min, t_bool max);
+void	indexation(t_stack A_or_B);
 
-void	free_error(t_node **a);
+int		flags_parser(int argc, char *argv[], t_ctx *ctx);
+int		create_stack_a(int argc, char *argv[], t_ctx *ctx);
+int		occurence_checker(t_stack A);
+double	compute_disorder(t_stack A);
 
-void	sa(t_node **a);
-void	sb(t_node **b);
-void	ss(t_node **a, t_node **b);
+void	push_a(t_ctx *ctx);
+void	push_b(t_ctx *ctx);
+void	swap_a(t_ctx *ctx, t_bool ss);
+void	swap_b(t_ctx *ctx, t_bool ss);
+void	swap_swap(t_ctx *ctx);
+void	rotate_a(t_ctx *ctx, t_bool rr);
+void	rotate_b(t_ctx *ctx, t_bool rr);
+void	rotate_rotate(t_ctx *ctx);
+void	reverse_rotate_a(t_ctx *ctx, t_bool rrr);
+void	reverse_rotate_b(t_ctx *ctx, t_bool rrr);
+void	reverse_rotate_rotate(t_ctx *ctx);
 
-void	ra(t_node **a);
-void	rb(t_node **b);
-void	rr(t_node **a, t_node **b);
+void	simple_min_max_extraction(t_ctx *ctx);
+void	range_based_sorting(t_ctx *ctx);
+void	radix_sort_adaptation_lsd(t_ctx *ctx);
 
-void	rra(t_node **a);
-void	rrb(t_node **b);
-void	rrr(t_node **a, t_node **b);
+void    sort_3_elements(t_ctx *ctx);
+void    sort_5_elements(t_ctx *ctx);
 
-void	push(t_node **src, t_node **dest);
+void	logs_manager(t_ctx *ctx, t_op operation);
+void	print_benchmark(t_ctx ctx);
 
 #endif
