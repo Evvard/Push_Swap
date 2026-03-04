@@ -4,7 +4,7 @@
 **Push_swap** est un projet d'algorithmie dont l'objectif est de trier une pile de données (Stack A) en utilisant une pile auxiliaire (Stack B) et un set d'instructions limité. 
 
 Pour optimiser le nombre de coups tout en respectant les contraintes de performance, nous avons sélectionné et implémenté les algorithmes suivants :
-* **Simple Strategy (Min) :** Pour les piles de petite taille, nous utilisons une stratégie d'extraction du minimum afin de réduire drastiquement le nombre d'opérations.
+* **Simple Strategy (Min-Max) :** Pour les piles de petite taille, nous utilisons une stratégie d'extraction du minimum et du maximum afin de réduire drastiquement le nombre d'opérations.
 * **Medium Strategy :** Une approche basée sur des "chunk " (plages de valeurs) pour assurer une transition fluide entre les petits et les grands ensembles.
 * **Radix Sort (LSD) :** Utilisé pour les listes importantes, ce tri par base (Least Significant Digit) traite les nombres selon leur représentation binaire, garantissant une efficacité constante sur de grands volumes de données.
 
@@ -15,7 +15,7 @@ Le choix de nos algorithmes repose sur un compromis entre efficacité (nombre de
 * **Radix Sort (LSD) :** Nous avons choisi le Radix pour sa prédictibilité. Contrairement à d'autres tris, sa complexité temporelle est stable en $O(n \times k)$ (où $k$ est le nombre de bits). Cela garantit que, même avec un set de 500 nombres très désordonnés, le programme ne dépassera jamais un seuil critique d'opérations. Peut importe le desordre il fera toujours le meme nombre d'opperation
 
 **Stratégie Min-Max (Extraction Sélective) :**
-* **Principe :** Recherche du minimum absolu pour l'isoler et le pousser.
+* **Principe :** Recherche du minimum/maximum absolu pour l'isoler et le pousser.
 * **Usage :** Idéal pour les petites piles où le coût de recherche est compensé par un tri immédiat.
 
 **Stratégie Chunk-Based (Découpage par Plages) :**
@@ -56,6 +56,12 @@ Une fois le flux d'instructions terminé (EOF), le programme effectue une double
 **Résultats :**
 * **`OK`** : La pile est triée et la mémoire est propre.
 * **`KO`** : La pile n'est pas triée ou la Stack B contient encore des éléments.
+
+### Partie Binome
+
+Maroard : Initialisation, algo complexe et une partie de l'algo moyen
+Eolivier : Initialisation, algo facile et une partie de l'algo moyen
+Bonus fait ensemble
 
 ### Exemple d'utilisation
 L'utilisation de "pipes" permet d'automatiser la vérification du tri :
